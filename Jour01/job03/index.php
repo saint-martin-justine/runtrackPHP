@@ -1,21 +1,9 @@
 <?php
-// Définir les variables de types primitifs
-$intVar = 42;
+$integerVar = 10;
 $floatVar = 3.14;
-$stringVar = "Hello, World!";
+$stringVar = "Hello";
 $boolVar = true;
-$nullVar = null;
 
-// Stocker les informations des variables dans un tableau associatif
-$variables = [
-    ['type' => 'Integer', 'name' => '$intVar', 'value' => $intVar],
-    ['type' => 'Float', 'name' => '$floatVar', 'value' => $floatVar],
-    ['type' => 'String', 'name' => '$stringVar', 'value' => $stringVar],
-    ['type' => 'Boolean', 'name' => '$boolVar', 'value' => $boolVar ? 'true' : 'false'],
-    ['type' => 'NULL', 'name' => '$nullVar', 'value' => 'null']
-];
-
-// Générer le tableau HTML
 echo '<table border="1">';
 echo '<thead>';
 echo '<tr>';
@@ -26,13 +14,33 @@ echo '</tr>';
 echo '</thead>';
 echo '<tbody>';
 
-foreach ($variables as $variable) {
-    echo '<tr>';
-    echo '<td>' . $variable['type'] . '</td>';
-    echo '<td>' . $variable['name'] . '</td>';
-    echo '<td>' . $variable['value'] . '</td>';
-    echo '</tr>';
-}
+// Ligne pour la variable entière
+echo '<tr>';
+echo '<td>Integer</td>';
+echo '<td>$integerVar</td>';
+echo '<td>' . $integerVar . '</td>';
+echo '</tr>';
+
+// Ligne pour la variable flottante
+echo '<tr>';
+echo '<td>Float</td>';
+echo '<td>$floatVar</td>';
+echo '<td>' . $floatVar . '</td>';
+echo '</tr>';
+
+// Ligne pour la chaîne de caractères
+echo '<tr>';
+echo '<td>String</td>';
+echo '<td>$stringVar</td>';
+echo '<td>' . $stringVar . '</td>';
+echo '</tr>';
+
+// Ligne pour la variable booléenne
+echo '<tr>';
+echo '<td>Boolean</td>';
+echo '<td>$boolVar</td>';
+echo '<td>' . ($boolVar ? 'true' : 'false') . '</td>';
+echo '</tr>';
 
 echo '</tbody>';
 echo '</table>';

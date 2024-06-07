@@ -8,35 +8,28 @@ function calcule($nombre1, $operation, $nombre2) {
         case '*':
             return $nombre1 * $nombre2;
         case '/':
-            // Vérifier si le diviseur est 0 pour éviter une division par zéro
             if ($nombre2 != 0) {
                 return $nombre1 / $nombre2;
             } else {
-                return "Division par zéro impossible";
+                return "Erreur : Division par zéro";
             }
         case '%':
-            // Vérifier si le diviseur est 0 pour éviter une division par zéro
             if ($nombre2 != 0) {
                 return $nombre1 % $nombre2;
             } else {
-                return "Division par zéro impossible";
+                return "Erreur : Division par zéro";
             }
         default:
-            return "Opération non valide";
+            return "Erreur : Opération non supportée";
     }
 }
 
-// Exemples d'utilisation de la fonction calcule()
-$resultat1 = calcule(10, '+', 5); // Addition : 10 + 5
-$resultat2 = calcule(20, '*', 3); // Multiplication : 20 * 3
-$resultat3 = calcule(25, '/', 5); // Division : 25 / 5
-$resultat4 = calcule(15, '%', 4); // Modulo : 15 % 4
-$resultat5 = calcule(8, '-', 3);  // Soustraction : 8 - 3
-
-// Affichage des résultats
-echo "Résultat 1 : $resultat1<br>"; // Affiche 15
-echo "Résultat 2 : $resultat2<br>"; // Affiche 60
-echo "Résultat 3 : $resultat3<br>"; // Affiche 5
-echo "Résultat 4 : $resultat4<br>"; // Affiche 3
-echo "Résultat 5 : $resultat5<br>"; // Affiche 5
+// Exemples d'appel de la fonction
+echo calcule(10, '+', 5) . "<br>";  // Affichera 15
+echo calcule(10, '-', 5) . "<br>";  // Affichera 5
+echo calcule(10, '*', 5) . "<br>";  // Affichera 50
+echo calcule(10, '/', 5) . "<br>";  // Affichera 2
+echo calcule(10, '%', 3) . "<br>";  // Affichera 1
+echo calcule(10, '/', 0) . "<br>";  // Affichera "Erreur : Division par zéro"
+echo calcule(10, '#', 5) . "<br>";  // Affichera "Erreur : Opération non supportée"
 ?>

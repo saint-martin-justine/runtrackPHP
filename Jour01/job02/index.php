@@ -1,7 +1,7 @@
 <?php
-// Afficher "Hello all !" pour la première fois
-echo "Hello all !";
+// Affichage du message pour la première fois
+echo "Hello all !<br>";
 
-/* Afficher "Hello all !" pour la deuxième fois */
-echo "Hello all !";
+# Affichage du message pour la deuxième fois
+echo "Hello alleg !<br>";
 ?>

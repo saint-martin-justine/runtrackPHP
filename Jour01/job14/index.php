@@ -3,83 +3,115 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transformer une chaîne de caractères</title>
+    <title>Transformation de chaîne</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+    </style>
 </head>
 <body>
-    <h2>Transformer une chaîne de caractères</h2>
-    <form method="post" action="index.php">
-        <label for="str">Chaîne de caractères :</label><br>
-        <input type="text" id="str" name="str" value="<?php echo isset($_POST['str']) ? htmlspecialchars($_POST['str']) : ''; ?>" required><br><br>
-        
-        <label for="action">Action à effectuer :</label><br>
-        <select id="action" name="action">
-            <option value="gras">Mettre en gras les mots commençant par une majuscule</option>
-            <option value="cesar">César : décaler chaque caractère</option>
-            <option value="plateforme">Ajouter "_" aux mots finissant par "me"</option>
-        </select><br><br>
-        
+    <form action="" method="post">
+        <label for="str">Texte :</label>
+        <input type="text" id="str" name="str" required><br>
+
+        <label for="transformation">Transformation :</label>
+        <select id="transformation" name="transformation">
+            <option value="gras">Gras</option>
+            <option value="cesar">César</option>
+            <option value="plateforme">Plateforme</option>
+        </select><br>
+
         <input type="submit" value="Transformer">
     </form>
+    <br>
 
     <?php
-    // Traitement du formulaire lorsque soumis
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $str = $_POST['str'];
-        $action = $_POST['action'];
+        $transformation = $_POST['transformation'];
 
-        switch ($action) {
-            case 'gras':
-                echo '<h3>Résultat après transformation :</h3>';
-                echo transformerEnGras($str);
-                break;
-            case 'cesar':
-                echo '<h3>Résultat après transformation :</h3>';
-                echo transformerCesar($str);
-                break;
-            case 'plateforme':
-                echo '<h3>Résultat après transformation :</h3>';
-                echo transformerPlateforme($str);
-                break;
-            default:
-                echo '<p>Aucune action sélectionnée.</p>';
-                break;
+        function makeBold($str) {
+            return preg_replace_callback('/\b[A-Z][a-z]*\b/', function($matches) {
+                return '<strong>' . $matches[0] . '</strong>';
+            }, $str);
         }
-    }
 
-    // Fonction pour mettre en gras les mots commençant par une majuscule
-    function transformerEnGras($str) {
-        return preg_replace_callback('/\b[A-Z][a-z]*\b/', function($match) {
-            return '<strong>' . $match[0] . '</strong>';
-        }, $str);
-    }
-
-    // Fonction pour appliquer le chiffrement César
-    function transformerCesar($str, $decalage = 2) {
-        $resultat = '';
-        $longueur = strlen($str);
-        for ($i = 0; $i < $longueur; $i++) {
-            $caractere = $str[$i];
-            $codeAscii = ord($caractere);
-            // Appliquer le décalage seulement aux lettres de l'alphabet
-            if (ctype_alpha($caractere)) {
-                $nouveauCodeAscii = $codeAscii + $decalage;
-                // Gérer le débordement au-delà de 'z' ou 'Z'
-                if (ctype_upper($caractere) && $nouveauCodeAscii > ord('Z')) {
-                    $nouveauCodeAscii -= 26;
-                } elseif (ctype_lower($caractere) && $nouveauCodeAscii > ord('z')) {
-                    $nouveauCodeAscii -= 26;
+        function cesarCipher($str, $shift = 2) {
+            $result = '';
+            $length = strlen($str);
+            for ($i = 0; $i < $length; $i++) {
+                $char = $str[$i];
+                if (ctype_alpha($char)) {
+                    $offset = ctype_upper($char) ? 65 : 97;
+                    $result .= chr((ord($char) + $shift - $offset) % 26 + $offset);
+                } else {
+                    $result .= $char;
                 }
-                $resultat .= chr($nouveauCodeAscii);
-            } else {
-                $resultat .= $caractere; // Ne pas changer les caractères non alphabétiques
             }
+            return $result;
         }
-        return $resultat;
-    }
 
-    // Fonction pour ajouter "_" aux mots finissant par "me"
-    function transformerPlateforme($str) {
-        return preg_replace('/\b(\w*me)\b/', '$1_', $str);
+        function plateforme($str) {
+            return preg_replace('/\b(\w*me)\b/', '$1_', $str);
+        }
+
+        echo '<div class="result">';
+        if ($transformation == 'gras') {
+            echo makeBold($str);
+        } elseif ($transformation == 'cesar') {
+            echo cesarCipher($str);
+        } elseif ($transformation == 'plateforme') {
+            echo plateforme($str);
+        }
+        echo '</div>';
     }
     ?>
 </body>
